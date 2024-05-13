@@ -102,6 +102,8 @@ public class Principal {
             System.out.println("Episodio no encontrado");
         }*/
 
+        // Aplicar Estadísticas
+
         Map<Integer, Double> evaluacionPorTemporada = episodios.stream()
                 .filter(e -> e.getEvaluacion() > 0.0)
                 .collect(Collectors.groupingBy(Episodio::getTemporada,
