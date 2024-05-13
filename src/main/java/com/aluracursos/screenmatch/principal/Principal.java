@@ -10,6 +10,7 @@ import com.aluracursos.screenmatch.service.ConvierteDatos;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class Principal {
@@ -88,7 +89,7 @@ public class Principal {
                 ));*/
 
         // Busqueda de episodios por nombre
-        System.out.println("Ingresa el titulo del episodio:");
+        /*System.out.println("Ingresa el titulo del episodio:");
         var porcionTitulo = teclado.nextLine();
         Optional<Episodio> episodioBuscado = episodios.stream()
                 .filter(e -> e.getTitulo().toUpperCase().contains(porcionTitulo.toUpperCase()))
@@ -99,7 +100,20 @@ public class Principal {
             System.out.println("Estos son los detalles del episodio: " + episodioBuscado.get());
         }else {
             System.out.println("Episodio no encontrado");
-        }
+        }*/
+
+        Map<Integer, Double> evaluacionPorTemporada = episodios.stream()
+                .filter(e -> e.getEvaluacion() > 0.0)
+                .collect(Collectors.groupingBy(Episodio::getTemporada,
+                        Collectors.averagingDouble(Episodio::getEvaluacion)));
+        System.out.println(evaluacionPorTemporada);
+
+        DoubleSummaryStatistics est = episodios.stream()
+                .filter(e -> e.getEvaluacion() > 0.0)
+                .collect(Collectors.summarizingDouble(Episodio::getEvaluacion));
+        System.out.println("Promedio general: " + est.getAverage());
+        System.out.println("Mejor evaluación: " + est.getMax());
+        System.out.println("Peor evaluación: " + est.getMin());
 
     }
 }
